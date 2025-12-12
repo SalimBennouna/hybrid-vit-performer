@@ -1,0 +1,21 @@
+# ===== CIFAR-10 BASELINE =====
+dataset: CIFAR10
+img_size: 32
+patch_size: 4
+num_classes: 10
+
+dim: 64
+depth: 4
+num_heads: 4
+mlp_ratio: 2.0
+
+batch_size: 128
+lr: 1e-3          # same as notebook (not reduced)
+weight_decay: 1e-4
+epochs: 50
+
+architecture: all_standard
+kernel_type: relu     # irrelevant
+m_features: 64        # irrelevant
+
+device: auto
