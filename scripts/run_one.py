@@ -65,6 +65,13 @@ def main() -> None:
         default=None,
         help="Random seed for full reproducibility.",
     )
+    parser.add_argument(
+        "--device",
+        type=str,
+        default=None,
+        choices=["auto", "cpu", "cuda", "mps"],
+        help="Device to use (overrides config).",
+    )
     args = parser.parse_args()
 
     base_cfg_path = DEFAULT_BASE[args.dataset]
@@ -78,6 +85,7 @@ def main() -> None:
             "kernel_type": args.kernel_type,
             "m_features": args.m_features,
             "seed": args.seed,
+            "device": args.device or base_cfg.get("device", "auto"),
         }
     )
 

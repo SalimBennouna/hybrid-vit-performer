@@ -45,6 +45,13 @@ def main() -> None:
         default=None,
         help="Override output directory (default: results/<dataset>).",
     )
+    parser.add_argument(
+        "--device",
+        type=str,
+        default=None,
+        choices=["auto", "cpu", "cuda", "mps"],
+        help="Device to use (overrides config).",
+    )
     args = parser.parse_args()
 
     base_cfg_path = args.base_config or DEFAULT_BASE[args.dataset]
@@ -52,6 +59,8 @@ def main() -> None:
 
     # Ensure dataset matches the CLI choice
     base_cfg["dataset"] = args.dataset
+    if args.device is not None:
+        base_cfg["device"] = args.device
     results_root = base_cfg.get("results_dir", "results")
     save_dir = args.save_dir or os.path.join(results_root, args.dataset)
 

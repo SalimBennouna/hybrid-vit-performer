@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Dict, Any, Optional
 
+import os
 import random
 
 import torch
@@ -31,6 +32,12 @@ def run_single_experiment(
             torch.cuda.manual_seed_all(cfg.seed)
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
+        os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":16:8")
+        try:
+            torch.use_deterministic_algorithms(True)
+        except Exception:
+            # Some backends/ops (e.g., MPS) may not fully support deterministic algorithms.
+            pass
 
     device = torch.device(cfg.device)
 
