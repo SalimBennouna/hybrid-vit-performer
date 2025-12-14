@@ -3,11 +3,21 @@ from __future__ import annotations
 
 import argparse
 import os
+import sys
 from dataclasses import asdict
+from pathlib import Path
 
-from hybrid_vit.config import load_config, config_from_dict
-from hybrid_vit.experiment import run_single_experiment
-from hybrid_vit.sweep import run_grid_sweep
+# Ensure repository root and src/ are on sys.path so hybrid_vit can be imported when run as a script.
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+for p in (SRC, ROOT):
+    p_str = str(p)
+    if p_str not in sys.path:
+        sys.path.insert(0, p_str)
+
+from hybrid_vit.config import load_config, config_from_dict  # noqa: E402
+from hybrid_vit.experiment import run_single_experiment  # noqa: E402
+from hybrid_vit.sweep import run_grid_sweep  # noqa: E402
 
 ARCHITECTURES = [
     "all_standard",     # baseline ViT
