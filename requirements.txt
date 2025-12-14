@@ -1,12 +1,22 @@
-numpy
+# Python version
+python>=3.10
+
+# Core deep learning
 torch
 torchvision
+
+# Core scientific stack
+numpy
 pandas
 matplotlib
+tqdm
+
+# Notebooks / reproducibility
+jupyter
+ipykernel
+
+# Performer / ViT
+performer-pytorch
+
+# YAML utilities
 pyyaml
-performer-pytorch==1.1.4
-einops==0.8.1
-local-attention==1.11.2
-axial-positional-embedding==0.3.12
-hyper-connections==0.2.1
-pillow
