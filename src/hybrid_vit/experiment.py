@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from typing import Dict, Any, Optional
 
+import random
+
 import torch
 import torch.nn as nn
+import numpy as np
 
 from .config import TrainConfig
 from .data import get_dataloaders
@@ -19,6 +22,15 @@ def run_single_experiment(
     notebook_style_filenames: bool = True,
     is_baseline: Optional[bool] = None,
 ) -> Dict[str, Any]:
+
+    if cfg.seed is not None:
+        random.seed(cfg.seed)
+        np.random.seed(cfg.seed)
+        torch.manual_seed(cfg.seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(cfg.seed)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
 
     device = torch.device(cfg.device)
 

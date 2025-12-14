@@ -3,6 +3,8 @@ from __future__ import annotations
 from itertools import product
 from typing import Dict, Any, List, Optional
 
+from dataclasses import asdict
+
 from .config import TrainConfig, config_from_dict
 from .experiment import run_single_experiment
 
@@ -25,6 +27,12 @@ def run_grid_sweep(
         merged.update(combo_dict)
 
         cfg: TrainConfig = config_from_dict(merged)
+
+        cfg_view = {k: v for k, v in asdict(cfg).items() if k not in {"dataset", "architecture", "kernel_type", "m_features"}}
+        print("\n--- Training configuration (fixed params) ---")
+        for k in sorted(cfg_view):
+            print(f"{k}: {cfg_view[k]}")
+        print("--------------------------------------------\n")
 
         is_baseline = (cfg.architecture == "all_standard")
 

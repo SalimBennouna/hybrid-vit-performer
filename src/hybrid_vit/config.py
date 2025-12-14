@@ -77,5 +77,25 @@ def config_from_dict(d: Dict[str, Any]) -> TrainConfig:
     Create TrainConfig from a dict; keeps defaults for missing keys.
     """
     cfg = TrainConfig(**{k: v for k, v in d.items() if hasattr(TrainConfig, k)})
+    # Defensive casts in case numeric fields arrive as strings (e.g., from CLI or YAML parsing).
+    for name in ["lr", "weight_decay", "mlp_ratio"]:
+        val = getattr(cfg, name, None)
+        if isinstance(val, str):
+            try:
+                setattr(cfg, name, float(val))
+            except ValueError:
+                pass
+    for name in ["epochs", "batch_size", "m_features", "img_size", "patch_size", "dim", "depth", "num_heads", "num_classes"]:
+        val = getattr(cfg, name, None)
+        if isinstance(val, str):
+            try:
+                setattr(cfg, name, int(float(val)))
+            except ValueError:
+                pass
+    if isinstance(cfg.seed, str):
+        try:
+            cfg.seed = int(cfg.seed)
+        except ValueError:
+            pass
     cfg.device = resolve_device(cfg.device)
     return cfg

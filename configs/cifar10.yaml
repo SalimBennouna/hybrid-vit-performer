@@ -1,0 +1,22 @@
+# ===== CIFAR-10 CONFIG (architecture/kernel/m set by scripts) =====
+dataset: CIFAR10
+img_size: 32
+patch_size: 4
+num_classes: 10
+
+dim: 64
+depth: 4
+num_heads: 4
+mlp_ratio: 2.0
+
+batch_size: 128
+lr: 1e-3
+weight_decay: 1e-4
+epochs: 50
+
+# These are set by CLI/grid scripts.
+architecture: null
+kernel_type: null
+m_features: null
+
+device: auto
