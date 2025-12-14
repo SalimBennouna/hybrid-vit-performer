@@ -32,6 +32,7 @@ class TrainConfig:
     lr: float = 1e-3
     weight_decay: float = 1e-4
     epochs: int = 50
+    num_workers: int = 2        # dataloader workers
     m_features: int = 256       # Performer random feature dimension m
     architecture: Literal[
         "all_standard",
@@ -85,7 +86,7 @@ def config_from_dict(d: Dict[str, Any]) -> TrainConfig:
                 setattr(cfg, name, float(val))
             except ValueError:
                 pass
-    for name in ["epochs", "batch_size", "m_features", "img_size", "patch_size", "dim", "depth", "num_heads", "num_classes"]:
+    for name in ["epochs", "batch_size", "m_features", "img_size", "patch_size", "dim", "depth", "num_heads", "num_classes", "num_workers"]:
         val = getattr(cfg, name, None)
         if isinstance(val, str):
             try:

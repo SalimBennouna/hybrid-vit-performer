@@ -13,6 +13,7 @@ batch_size: 128
 lr: 1e-3
 weight_decay: 1e-4
 epochs: 50
+num_workers: 2
 
 # These are set by CLI/grid scripts.
 architecture: null

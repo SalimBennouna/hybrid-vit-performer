@@ -2,6 +2,10 @@ from __future__ import annotations
 
 from typing import Tuple
 
+import numpy as np
+import random
+import functools
+
 import torch
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
@@ -9,10 +13,36 @@ from torchvision import datasets, transforms
 from .config import TrainConfig
 
 
+def _seed_worker(base_seed: int, worker_id: int) -> None:
+    worker_seed = base_seed + worker_id
+    np.random.seed(worker_seed)
+    random.seed(worker_seed)
+    torch.manual_seed(worker_seed)
+
+
 def get_dataloaders(cfg: TrainConfig) -> Tuple[DataLoader, DataLoader, int]:
     """
     Matches your notebook transforms/params closely.
     """
+    def make_loader(ds, shuffle: bool) -> DataLoader:
+        generator = None
+        worker_init_fn = None
+        if cfg.seed is not None:
+            generator = torch.Generator()
+            generator.manual_seed(cfg.seed)
+            worker_init_fn = functools.partial(_seed_worker, cfg.seed)
+
+        use_pin = (cfg.device == "cuda")
+        return DataLoader(
+            ds,
+            batch_size=cfg.batch_size,
+            shuffle=shuffle,
+            num_workers=cfg.num_workers,
+            pin_memory=use_pin,
+            worker_init_fn=worker_init_fn,
+            generator=generator,
+        )
+
     if cfg.dataset == "MNIST":
         in_channels = 1
         transform = transforms.Compose([
@@ -41,19 +71,6 @@ def get_dataloaders(cfg: TrainConfig) -> Tuple[DataLoader, DataLoader, int]:
     else:
         raise ValueError(f"Unknown dataset: {cfg.dataset}")
 
-    use_pin = (cfg.device == "cuda")
-    train_loader = DataLoader(
-        train_ds,
-        batch_size=cfg.batch_size,
-        shuffle=True,
-        num_workers=2,
-        pin_memory=use_pin
-    )
-    test_loader = DataLoader(
-        test_ds,
-        batch_size=cfg.batch_size,
-        shuffle=False,
-        num_workers=2,
-        pin_memory=use_pin
-    )
+    train_loader = make_loader(train_ds, shuffle=True)
+    test_loader = make_loader(test_ds, shuffle=False)
     return train_loader, test_loader, in_channels
