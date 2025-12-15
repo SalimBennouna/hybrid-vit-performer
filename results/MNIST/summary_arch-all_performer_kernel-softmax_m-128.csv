@@ -1,0 +1,2 @@
+dataset,architecture,kernel_type,m_features,best_test_acc,total_train_time,avg_train_time_per_epoch,infer_time_per_batch_mean_ms,infer_time_per_batch_std_ms
+MNIST,all_performer,softmax,128,98.52,1889.3120138645172,37.78624027729035,34.671592712402344,3.524117223901221

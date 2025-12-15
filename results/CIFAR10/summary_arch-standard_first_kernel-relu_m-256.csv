@@ -1,0 +1,2 @@
+dataset,architecture,kernel_type,m_features,best_test_acc,total_train_time,avg_train_time_per_epoch,infer_time_per_batch_mean_ms,infer_time_per_batch_std_ms
+CIFAR10,standard_first,relu,256,73.9,2491.0687724160043,49.82137544832008,35.172591091977196,18.445951805307782

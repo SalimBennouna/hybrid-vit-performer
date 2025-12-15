@@ -1,0 +1,2 @@
+dataset,architecture,kernel_type,m_features,best_test_acc,total_train_time,avg_train_time_per_epoch,infer_time_per_batch_mean_ms,infer_time_per_batch_std_ms
+CIFAR10,standard_first,softmax,512,72.61,4969.71323254577,99.39426465091539,105.04291446517489,25.672076541771144

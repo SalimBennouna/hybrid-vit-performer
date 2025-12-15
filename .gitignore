@@ -10,7 +10,6 @@ env/
 data/
 *.pt
 *.pth
-*.csv
 *.json
 .ipynb_checkpoints/
 .vscode/

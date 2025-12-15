@@ -1,0 +1,2 @@
+dataset,architecture,kernel_type,m_features,best_test_acc,total_train_time,avg_train_time_per_epoch,infer_time_per_batch_mean_ms,infer_time_per_batch_std_ms
+MNIST,all_performer,relu,64,98.50999999999999,968.9334583282471,19.37866916656494,13.0230712890625,1.463969252616552
