@@ -27,7 +27,7 @@ ARCHITECTURES = [
     "all_performer",
 ]
 
-M_LIST = [8, 16, 32, 64, 128, 256]
+M_LIST = [16, 32, 64, 128, 256]
 KERNEL_TYPES = ["relu", "softmax"]
 
 DEFAULT_BASE = {
