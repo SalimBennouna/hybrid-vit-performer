@@ -30,6 +30,7 @@ KERNEL_CHOICES = ["relu", "softmax"]
 DEFAULT_BASE = {
     "MNIST": "configs/mnist.yaml",
     "CIFAR10": "configs/cifar10.yaml",
+    "IMAGENET_SYNTH": "configs/imagenet_synth.yaml",
 }
 
 
@@ -37,7 +38,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run a single HybridViT experiment with CLI overrides.")
     parser.add_argument(
         "--dataset",
-        choices=["MNIST", "CIFAR10"],
+        choices=["MNIST", "CIFAR10", "IMAGENET_SYNTH"],
         required=True,
         help="Dataset to run.",
     )

@@ -1,0 +1,26 @@
+# ===== Synthetic ImageNet-like CONFIG (224x224) =====
+dataset: IMAGENET_SYNTH
+img_size: 224
+patch_size: 16
+num_classes: 1000
+
+dim: 192
+depth: 8
+num_heads: 3
+mlp_ratio: 4.0
+
+batch_size: 64
+lr: 3e-4
+weight_decay: 5e-2
+epochs: 1
+num_workers: 4
+
+synthetic_train_samples: 10000
+synthetic_val_samples: 2000
+
+# These are set by CLI/grid scripts.
+architecture: null
+kernel_type: null
+m_features: null
+
+device: auto

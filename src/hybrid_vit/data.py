@@ -1,16 +1,34 @@
 from __future__ import annotations
 
+import functools
+import random
 from typing import Tuple
 
 import numpy as np
-import random
-import functools
-
 import torch
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
 from torchvision import datasets, transforms
 
 from .config import TrainConfig
+
+
+class SyntheticImageNet(Dataset):
+    """
+    Top-level class so it can be pickled with multiprocessing DataLoader.
+    Yields random 3xHxW images and random labels in [0, num_classes).
+    """
+    def __init__(self, length: int, img_size: int, num_classes: int):
+        self.length = length
+        self.img_size = img_size
+        self.num_classes = num_classes
+
+    def __len__(self):
+        return self.length
+
+    def __getitem__(self, idx):
+        img = torch.randn(3, self.img_size, self.img_size)
+        label = torch.randint(low=0, high=self.num_classes, size=(1,)).item()
+        return img, label
 
 
 def _seed_worker(base_seed: int, worker_id: int) -> None:
@@ -24,6 +42,7 @@ def get_dataloaders(cfg: TrainConfig) -> Tuple[DataLoader, DataLoader, int]:
     """
     Matches your notebook transforms/params closely.
     """
+
     def make_loader(ds, shuffle: bool) -> DataLoader:
         generator = None
         worker_init_fn = None
@@ -68,6 +87,13 @@ def get_dataloaders(cfg: TrainConfig) -> Tuple[DataLoader, DataLoader, int]:
         ])
         train_ds = datasets.CIFAR10("./data", train=True, download=True, transform=transform)
         test_ds  = datasets.CIFAR10("./data", train=False, transform=transform)
+
+    elif cfg.dataset == "IMAGENET_SYNTH":
+        in_channels = 3
+
+        train_ds = SyntheticImageNet(cfg.synthetic_train_samples, cfg.img_size, cfg.num_classes)
+        test_ds = SyntheticImageNet(cfg.synthetic_val_samples, cfg.img_size, cfg.num_classes)
+
     else:
         raise ValueError(f"Unknown dataset: {cfg.dataset}")
 

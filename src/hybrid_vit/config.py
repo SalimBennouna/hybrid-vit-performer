@@ -20,7 +20,7 @@ def resolve_device(device: str) -> str:
 
 @dataclass
 class TrainConfig:
-    dataset: Literal["MNIST", "CIFAR10"] = "MNIST"
+    dataset: Literal["MNIST", "CIFAR10", "IMAGENET_SYNTH"] = "MNIST"
     img_size: int = 28          # 32 for CIFAR-10
     patch_size: int = 4
     num_classes: int = 10
@@ -46,7 +46,11 @@ class TrainConfig:
 
     results_dir: str = "results"
     run_name: Optional[str] = None  
-    seed: Optional[int] = None      
+    seed: Optional[int] = None
+
+    # Synthetic ImageNet-like
+    synthetic_train_samples: int = 10000
+    synthetic_val_samples: int = 2000
 
 
 def _deep_update(base: Dict[str, Any], upd: Dict[str, Any]) -> Dict[str, Any]:
